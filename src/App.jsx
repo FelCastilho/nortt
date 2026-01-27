@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import { auth } from "./firebase/firebase"
+import { getTransactions } from "./services/transactions"
 
 import MainLayout from "./layouts/MainLayout"
 
@@ -9,30 +12,53 @@ import Calculadora from "./pages/calculadora/Calculadora"
 import Historico from "./pages/Historico/Historico"
 import Perfil from "./pages/Perfil/Perfil"
 import Movimentacoes from "./pages/Movimentacoes/Movimentacoes"
+import Login from "./pages/Login/Login"
+import Register from "./pages/Register/Register"
 
 // Modal
 import TransactionModal from "./components/Modal/TransactionModal"
 
 function App() {
   const [modalAberto, setModalAberto] = useState(false)
+  const [transacoes, setTransacoes] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const [transacoes, setTransacoes] = useState([
-    { tipo: "entrada", valor: 150, descricao: "Mesada", data: "20/01" },
-    { tipo: "saida", valor: 12, descricao: "Uber", data: "22/01" },
-    { tipo: "entrada", valor: 24, descricao: "Almoço", data: "23/01" },
-  ])
+  async function carregarTransacoes() {
+    const user = auth.currentUser
+    if (!user) return
+
+    setLoading(true)
+    const data = await getTransactions(user.uid)
+    setTransacoes(data)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        carregarTransacoes()
+      } else {
+        setTransacoes([])
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   const saldo = transacoes.reduce((total, t) => {
-    return t.tipo === "entrada" ? total + t.valor : total - t.valor
+    return t.tipo === "entrada"
+      ? total + t.valor
+      : total - t.valor
   }, 0)
-
-  function adicionarTransacao(nova) {
-    setTransacoes(prev => [...prev, nova])
-  }
 
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* App */}
         <Route element={<MainLayout />}>
           <Route
             path="/"
@@ -40,6 +66,7 @@ function App() {
               <Inicio
                 saldo={saldo}
                 transacoes={transacoes}
+                loading={loading}
                 abrirModal={() => setModalAberto(true)}
               />
             }
@@ -52,7 +79,7 @@ function App() {
 
           <Route
             path="/movimentacoes"
-            element={<Movimentacoes onAdd={adicionarTransacao} />}
+            element={<Movimentacoes />}
           />
 
           <Route path="/calculadora" element={<Calculadora />} />
@@ -63,7 +90,7 @@ function App() {
       {modalAberto && (
         <TransactionModal
           onClose={() => setModalAberto(false)}
-          onAdd={adicionarTransacao}
+          onSaved={carregarTransacoes}
         />
       )}
     </BrowserRouter>

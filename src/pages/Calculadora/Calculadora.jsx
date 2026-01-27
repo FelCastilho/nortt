@@ -3,97 +3,96 @@ import BudgetModal from "./budget-modal/BudgetModal"
 import "./style.css"
 
 function Calculadora() {
-  const [expressao, setExpressao] = useState("")
+  const [display, setDisplay] = useState("")
   const [historico, setHistorico] = useState([])
   const [modalAberto, setModalAberto] = useState(false)
-
-  function adicionar(valor) {
-    setExpressao(prev => prev + valor)
-  }
-
-  function limpar() {
-    setExpressao("")
-  }
+  const [planejamento, setPlanejamento] = useState(null)
 
   function calcular() {
-    if (!expressao) return
-
     try {
-      const resultado = eval(expressao)
-      const registro = `${expressao} = ${resultado}`
-
-      setHistorico(prev => [registro, ...prev.slice(0, 4)])
-      setExpressao(String(resultado))
+      const resultado = eval(display)
+      setHistorico(prev => [`${display} = ${resultado}`, ...prev.slice(0, 9)])
+      setDisplay(String(resultado))
     } catch {
-      setExpressao("Erro")
+      alert("Cálculo inválido")
     }
   }
 
   return (
     <div className="calculadora-page">
-      {/* Calculadora padrão */}
+      {/* CALCULADORA */}
       <div className="calc-container">
         <h1>Calculadora</h1>
 
-        <input
-          className="display"
-          value={expressao}
-          readOnly
-        />
+        <input className="display" value={display} readOnly />
 
         <div className="teclado">
-          {["7","8","9","/","4","5","6","*","1","2","3","-","0",".","+","="].map(btn => (
-            <button
-              key={btn}
-              className={btn === "=" ? "igual" : ""}
-              onClick={() => btn === "=" ? calcular() : adicionar(btn)}
-            >
+          {["7","8","9","/",
+            "4","5","6","*",
+            "1","2","3","-",
+            "0",".","+"
+          ].map(btn => (
+            <button key={btn} onClick={() => setDisplay(display + btn)}>
               {btn}
             </button>
           ))}
 
-          <button className="limpar" onClick={limpar}>
-            Limpar
-          </button>
+          <button className="igual" onClick={calcular}>=</button>
+          <button className="limpar" onClick={() => setDisplay("")}>Limpar</button>
         </div>
       </div>
 
-      {/* Lado direito */}
+      {/* LADO DIREITO */}
       <div className="calc-side">
-        {/* Recentes */}
-        <div className="calc-historico">
-          <h2>Recentes</h2>
+        {/* PLANEJAMENTO */}
+        <div className="calc-planejamento">
+          <h2>Planejamento</h2>
+          <p>Veja por quantos meses você consegue viver sem renda</p>
 
-          {historico.length === 0 ? (
-            <p className="empty">Nenhum cálculo ainda.</p>
-          ) : (
-            <ul>
-              {historico.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
+          <button className="btn-primary" onClick={() => setModalAberto(true)}>
+            Calcular meses sem renda
+          </button>
+
+          {planejamento && (
+            <>
+              <div className="resultado">
+                <strong>Total:</strong> R$ {planejamento.total}<br />
+                <strong>Gasto mensal:</strong> R$ {planejamento.gastoMensal}<br />
+                <strong>Meses:</strong> {planejamento.meses}
+              </div>
+
+              <div className="budget-simulacao">
+                {planejamento.simulacao.map(item => (
+                  <div key={item.mes} className="budget-simulacao-item">
+                    <span>Mês {item.mes}</span>
+                    <strong>R$ {item.restante}</strong>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
 
-        {/* Planejamento */}
-        <div className="calc-planejamento">
-          <h2>Planejamento</h2>
-          <p>
-            Descubra por quanto tempo você consegue se manter
-            apenas com o dinheiro atual.
-          </p>
-
-          <button
-            className="btn-add"
-            onClick={() => setModalAberto(true)}
-          >
-            Calcular meses sem renda
-          </button>
+        {/* HISTÓRICO */}
+        <div className="calc-historico">
+          <h2>Recentes</h2>
+          <ul>
+            {historico.length === 0 && <li>Nenhum cálculo ainda</li>}
+            {historico.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
 
       {modalAberto && (
-        <BudgetModal onClose={() => setModalAberto(false)} />
+        <BudgetModal
+          onClose={() => setModalAberto(false)}
+          onCalcular={(dados) => {
+            setPlanejamento(dados)
+            setModalAberto(false)
+          }}
+        />
       )}
     </div>
   )

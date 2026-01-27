@@ -1,95 +1,89 @@
-.perfil {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+.perfil-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.perfil-header {
+  margin-bottom: 32px;
 }
 
 .perfil-header h1 {
-  font-size: 26px;
-  font-weight: 600;
-  color: #111;
+  font-size: 2rem;
+  margin-bottom: 6px;
 }
 
 .perfil-header p {
-  font-size: 14px;
-  color: #666;
-  margin-top: 4px;
-}
-
-.perfil-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-}
-
-.perfil-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-}
-
-.perfil-card .label {
-  font-size: 13px;
   color: #777;
-}
-
-.perfil-card strong {
-  font-size: 22px;
-  color: #111;
-}
-
-.perfil-card.destaque {
-  background: linear-gradient(135deg, #3b5bdb, #5f7cff);
-  color: #fff;
-}
-
-.perfil-card.destaque .label,
-.perfil-card.destaque strong {
-  color: #fff;
 }
 
 .perfil-section {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
 }
 
 .perfil-section h2 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 1.1rem;
   margin-bottom: 16px;
-  color: #3b5bdb;
 }
 
-.perfil-section p {
-  font-size: 14px;
-  color: #444;
-  line-height: 1.6;
-}
-
-.perfil-info {
+.perfil-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
-.perfil-info div {
+.perfil-item {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
-.perfil-info span {
-  font-size: 12px;
-  color: #777;
+.perfil-item span {
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 4px;
 }
 
-.perfil-info strong {
-  font-size: 14px;
-  color: #111;
+.perfil-item strong {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.perfil-item.wide {
+  grid-column: span 2;
+}
+
+.uid {
+  font-size: 0.8rem;
+  word-break: break-all;
+  color: #555;
+}
+
+.perfil-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-logout {
+  padding: 12px 24px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  opacity: 0.9;
+}
+
+.perfil-loading {
+  padding: 40px;
 }

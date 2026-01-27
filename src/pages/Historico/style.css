@@ -1,46 +1,122 @@
 .historico {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 24px;
+  padding: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-.historico h1 {
+/* Header */
+.historico-header {
   margin-bottom: 24px;
 }
 
-.transacoes {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.historico-header h1 {
+  margin: 0;
 }
 
-.transacao {
-  display: grid;
-  grid-template-columns: 80px 1fr 100px;
-  align-items: center;
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: #f9fafb;
-}
-
-.transacao.entrada {
-  color: #2f9e44;
-}
-
-.transacao.saida {
-  color: #e03131;
-}
-
-.valor {
-  font-weight: 600;
-}
-
-.descricao {
-  color: #333;
-}
-
-.data {
-  text-align: right;
+.historico-header span {
   font-size: 14px;
   color: #666;
 }
+
+/* Filtros */
+.filtros {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.filtros select,
+.filtros input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+/* Lista */
+.lista {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.linha {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.linha:last-child {
+  border-bottom: none;
+}
+
+.tipo {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.tipo.entrada {
+  color: #2ecc71;
+}
+
+.tipo.saida {
+  color: #e74c3c;
+}
+
+.info strong {
+  display: block;
+  font-size: 14px;
+}
+
+.info small {
+  font-size: 12px;
+  color: #777;
+}
+
+.valor {
+  font-weight: 500;
+}
+
+.muted {
+  padding: 24px;
+  color: #888;
+  font-size: 14px;
+}
+
+.historico-vazio {
+  margin-top: 48px;
+  padding: 40px;
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px dashed #ddd;
+}
+
+.historico-vazio h2 {
+  margin-bottom: 8px;
+}
+
+.historico-vazio p {
+  font-size: 14px;
+  color: #666;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  color: #555;
+}
+
+.edit-btn:hover {
+  text-decoration: underline;
+}
+
+.danger {
+  background: #e74c3c;
+  color: white;
+}
+

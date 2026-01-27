@@ -1,22 +1,40 @@
 import { useState } from "react"
+import { addTransaction } from "../../services/transactions"
+import { auth } from "../../firebase/firebase"
 import "./style.css"
 
-function TransactionModal({ onClose, onAdd }) {
+function TransactionModal({ onClose, onSaved }) {
   const [valor, setValor] = useState("")
   const [descricao, setDescricao] = useState("")
   const [tipo, setTipo] = useState("entrada")
+  const [loading, setLoading] = useState(false)
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!valor) return
 
-    onAdd({
-      tipo,
-      valor: Number(valor),
-      descricao,
-      data: new Date().toLocaleDateString("pt-BR")
-    })
+    try {
+      setLoading(true)
 
-    onClose()
+      const user = auth.currentUser
+      if (!user) {
+        alert("Usuário não autenticado")
+        return
+      }
+
+      await addTransaction(user.uid, {
+        tipo,
+        valor: Number(valor),
+        descricao
+      })
+
+      onSaved?.()
+      onClose()
+    } catch (error) {
+      alert("Erro ao salvar transação")
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -28,14 +46,14 @@ function TransactionModal({ onClose, onAdd }) {
           type="number"
           placeholder="Valor"
           value={valor}
-          onChange={(e) => setValor(e.target.value)}
+          onChange={e => setValor(e.target.value)}
         />
 
         <input
           type="text"
           placeholder="Descrição"
           value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
+          onChange={e => setDescricao(e.target.value)}
         />
 
         <div className="tipo">
@@ -58,8 +76,13 @@ function TransactionModal({ onClose, onAdd }) {
           <button onClick={onClose} className="cancelar">
             Cancelar
           </button>
-          <button onClick={handleSubmit} className="confirmar">
-            Confirmar
+
+          <button
+            onClick={handleSubmit}
+            className="confirmar"
+            disabled={loading}
+          >
+            {loading ? "Salvando..." : "Confirmar"}
           </button>
         </div>
       </div>

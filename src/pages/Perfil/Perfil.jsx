@@ -1,61 +1,93 @@
+import { useEffect, useState } from "react"
+import { signOut } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore"
+import { auth, db } from "../../firebase/firebase"
+import { useNavigate } from "react-router-dom"
+
 import "./style.css"
 
-function Perfil({ transacoes = [], saldo = 0 }) {
-  const entradas = transacoes.filter(t => t.tipo === "entrada").length
-  const saidas = transacoes.filter(t => t.tipo === "saida").length
+function Perfil() {
+  const navigate = useNavigate()
+  const user = auth.currentUser
+
+  const [dados, setDados] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function carregarPerfil() {
+      if (!user) return
+
+      const ref = doc(db, "users", user.uid)
+      const snap = await getDoc(ref)
+
+      if (snap.exists()) {
+        setDados(snap.data())
+      }
+
+      setLoading(false)
+    }
+
+    carregarPerfil()
+  }, [user])
+
+  function logout() {
+    signOut(auth)
+    navigate("/login")
+  }
+
+  if (loading) {
+    return <p className="perfil-loading">Carregando perfil...</p>
+  }
 
   return (
-    <div className="perfil">
-      <div className="perfil-header">
-        <h1>Perfil</h1>
-        <p>Informações da sua conta e resumo financeiro</p>
-      </div>
+    <div className="perfil-container">
+      <header className="perfil-header">
+        <h1>Meu perfil</h1>
+        <p>Gerencie suas informações pessoais</p>
+      </header>
 
-      <div className="perfil-grid">
-        <div className="perfil-card destaque">
-          <span className="label">Saldo atual</span>
-          <strong>R$ {saldo.toFixed(2)}</strong>
+      <section className="perfil-section">
+        <h2>Informações pessoais</h2>
+
+        <div className="perfil-grid">
+          <div className="perfil-item">
+            <span>Nome</span>
+            <strong>{dados?.nome}</strong>
+          </div>
+
+          <div className="perfil-item">
+            <span>Sobrenome</span>
+            <strong>{dados?.sobrenome}</strong>
+          </div>
+
+          <div className="perfil-item">
+            <span>Idade</span>
+            <strong>{dados?.idade} anos</strong>
+          </div>
         </div>
+      </section>
 
-        <div className="perfil-card">
-          <span className="label">Entradas</span>
-          <strong>{entradas}</strong>
-        </div>
-
-        <div className="perfil-card">
-          <span className="label">Saídas</span>
-          <strong>{saidas}</strong>
-        </div>
-      </div>
-
-      <div className="perfil-section">
+      <section className="perfil-section">
         <h2>Conta</h2>
 
-        <div className="perfil-info">
-          <div>
+        <div className="perfil-grid">
+          <div className="perfil-item wide">
             <span>Email</span>
-            <strong>usuario@nortt.app</strong>
+            <strong>{user.email}</strong>
           </div>
 
-          <div>
-            <span>Plano</span>
-            <strong>Gratuito</strong>
-          </div>
-
-          <div>
-            <span>Moeda</span>
-            <strong>Real (BRL)</strong>
+          <div className="perfil-item wide">
+            <span>ID do usuário</span>
+            <strong className="uid">{user.uid}</strong>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="perfil-section">
-        <h2>Sobre a Nortt</h2>
-        <p>
-          A Nortt foi criada para tornar o controle financeiro simples,
-          acessível e visualmente claro — sem complicação.
-        </p>
-      </div>
+      <section className="perfil-actions">
+        <button onClick={logout} className="btn-logout">
+          Sair da conta
+        </button>
+      </section>
     </div>
   )
 }

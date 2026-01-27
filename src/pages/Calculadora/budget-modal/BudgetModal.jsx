@@ -1,49 +1,64 @@
 import { useState } from "react"
 import "../style.css"
 
-function BudgetModal({ onClose }) {
+function BudgetModal({ onClose, onCalcular }) {
   const [total, setTotal] = useState("")
-  const [gasto, setGasto] = useState("")
-  const [resultado, setResultado] = useState(null)
+  const [gastoMensal, setGastoMensal] = useState("")
 
   function calcular() {
-    if (!total || !gasto || gasto <= 0) return
+    const t = Number(total)
+    const g = Number(gastoMensal)
 
-    const meses = (Number(total) / Number(gasto)).toFixed(1)
-    setResultado(meses)
+    if (!t || !g || g <= 0) {
+      alert("Valores inválidos")
+      return
+    }
+
+    const meses = Math.floor(t / g)
+    let restante = t
+
+    const simulacao = []
+
+    for (let i = 1; i <= meses; i++) {
+      restante -= g
+      simulacao.push({
+        mes: i,
+        restante: Math.max(restante, 0)
+      })
+    }
+
+    onCalcular({
+      total: t,
+      gastoMensal: g,
+      meses,
+      simulacao
+    })
   }
 
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h2>Planejamento financeiro</h2>
+        <h2>Meses sem renda</h2>
 
         <input
           type="number"
-          placeholder="Quanto dinheiro você tem?"
+          placeholder="Dinheiro disponível"
           value={total}
-          onChange={(e) => setTotal(e.target.value)}
+          onChange={e => setTotal(e.target.value)}
         />
 
         <input
           type="number"
           placeholder="Gasto mensal"
-          value={gasto}
-          onChange={(e) => setGasto(e.target.value)}
+          value={gastoMensal}
+          onChange={e => setGastoMensal(e.target.value)}
         />
 
-        {resultado && (
-          <p className="resultado">
-            Seu dinheiro dura cerca de{" "}
-            <strong>{resultado} meses</strong>
-          </p>
-        )}
-
-        <div className="acoes">
-          <button onClick={onClose} className="cancelar">
-            Fechar
+        <div className="modal-actions">
+          <button className="btn-secondary" onClick={onClose}>
+            Cancelar
           </button>
-          <button onClick={calcular} className="confirmar">
+          <button className="btn-primary" onClick={calcular}>
             Calcular
           </button>
         </div>
