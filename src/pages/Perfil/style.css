@@ -1,0 +1,95 @@
+.perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.perfil-header h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #111;
+}
+
+.perfil-header p {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.perfil-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.perfil-card .label {
+  font-size: 13px;
+  color: #777;
+}
+
+.perfil-card strong {
+  font-size: 22px;
+  color: #111;
+}
+
+.perfil-card.destaque {
+  background: linear-gradient(135deg, #3b5bdb, #5f7cff);
+  color: #fff;
+}
+
+.perfil-card.destaque .label,
+.perfil-card.destaque strong {
+  color: #fff;
+}
+
+.perfil-section {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.perfil-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #3b5bdb;
+}
+
+.perfil-section p {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.perfil-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.perfil-info div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.perfil-info span {
+  font-size: 12px;
+  color: #777;
+}
+
+.perfil-info strong {
+  font-size: 14px;
+  color: #111;
+}

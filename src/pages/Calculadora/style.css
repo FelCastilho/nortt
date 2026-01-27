@@ -1,0 +1,117 @@
+.calculadora-page {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+}
+
+/* Caixa da calculadora */
+.calc-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.calc-container h1 {
+  margin-bottom: 16px;
+}
+
+/* Display */
+.display {
+  width: 100%;
+  height: 56px;
+  font-size: 22px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  text-align: right;
+}
+
+/* Teclado */
+.teclado {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.teclado button {
+  height: 52px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.teclado button:hover {
+  background: #e5e5e5;
+}
+
+.igual {
+  background: #111;
+  color: #fff;
+}
+
+.limpar {
+  grid-column: span 4;
+  background: #ff4d4d;
+  color: #fff;
+}
+
+/* Histórico */
+.calc-historico {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.calc-historico h2 {
+  margin-bottom: 16px;
+}
+
+.calc-historico ul {
+  list-style: none;
+  padding: 0;
+}
+
+.calc-historico li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.calculadora-page {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+}
+
+.calc-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.calc-planejamento {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.calc-planejamento p {
+  color: #666;
+  margin: 12px 0 16px;
+}
+
+.resultado {
+  margin-top: 16px;
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+
