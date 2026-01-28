@@ -8,7 +8,7 @@ import MainLayout from "./layouts/MainLayout"
 
 // Pages
 import Inicio from "./pages/Inicio/Inicio"
-import Calculadora from "./pages/calculadora/Calculadora"
+import Calculadora from "./pages/Calculadora/Calculadora"
 import Historico from "./pages/Historico/Historico"
 import Perfil from "./pages/Perfil/Perfil"
 import Movimentacoes from "./pages/Movimentacoes/Movimentacoes"
